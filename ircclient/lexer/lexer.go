@@ -1,6 +1,8 @@
 package lexer
 
 import (
+	"strings"
+
 	"github.com/rmerry/tncbot/ircclient/tokens"
 )
 
@@ -116,5 +118,5 @@ func (l *Lexer) getString() string {
 		}
 	}
 
-	return str
+	return strings.TrimRight(str, "\r\n")
 }
