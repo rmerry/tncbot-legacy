@@ -1,0 +1,7 @@
+{
+	"ident": "tncbot",
+	"channel": "#bitsociety",
+	"nickname": "test_bot",
+	"port": 6667,
+	"server": "irc.freenode.net"
+}
