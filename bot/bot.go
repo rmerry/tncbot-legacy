@@ -77,16 +77,18 @@ func (b *Bot) Connect() error {
 
 	for {
 		msg := <-b.ircclient.Messages
-		if linkDescription, ok := linkdescribe.Execute(msg.Value); ok {
-			b.ircclient.SendMessage(&ircclient.IRCMessage{Value: linkDescription})
-		} else {
-			for _, a := range actions {
-				if str, ok := a.function(msg.Value); ok {
-					b.ircclient.SendMessage(&ircclient.IRCMessage{Value: str})
-					break
+		go func() {
+			if linkDescription, ok := linkdescribe.Execute(msg.Value); ok {
+				b.ircclient.SendMessage(&ircclient.IRCMessage{Value: linkDescription})
+			} else {
+				for _, a := range actions {
+					if str, ok := a.function(msg.Value); ok {
+						b.ircclient.SendMessage(&ircclient.IRCMessage{Value: str})
+						break
+					}
 				}
 			}
-		}
+		}()
 	}
 
 	return nil

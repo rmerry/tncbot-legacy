@@ -108,10 +108,12 @@ func (c *IRCClient) startListener() {
 		}
 
 		fmt.Print(msg)
-		m := c.parse(msg)
-		if m != nil {
-			c.Messages <- m
-		}
+		go func() {
+			m := c.parse(msg)
+			if m != nil {
+				c.Messages <- m
+			}
+		}()
 	}
 }
 
@@ -164,7 +166,7 @@ func (c *IRCClient) parse(msg string) *IRCMessage {
 		}
 
 	case tokens.PING:
-		c.outbox <- "PONG"
+		c.outbox <- "PONG\r\n"
 	}
 
 	return nil
